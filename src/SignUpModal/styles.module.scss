@@ -1,0 +1,56 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 25px 23px 32px;
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  width: 500px;
+  height: 220px;
+
+  h2 {
+    margin-bottom: 30px;
+  }
+
+  p {
+    margin-bottom: 13px;
+  }
+}
+
+.modal_form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  input {
+    height: 28px;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #777777;
+    border-radius: 4px;
+
+    margin-bottom: 20px;
+    padding-left: 11px;
+
+    &::placeholder {
+      color: #cccccc;
+    }
+  }
+
+  button {
+    background: #000000;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ffffff;
+
+    width: 111px;
+    height: 33px;
+
+    &:disabled {
+      background-color: gray;
+    }
+  }
+}
