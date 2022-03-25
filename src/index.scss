@@ -10,17 +10,27 @@
 #root {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100vw;
   min-height: 100vh;
   overflow-x: hidden;
   background-color: #dddddd;
+  font-family: 'Roboto';
+  font-style: normal;
 }
 
 h2 {
-  font-family: 'Roboto';
-  font-style: normal;
   font-weight: 700;
   font-size: 22px;
   line-height: 26px;
+}
+
+h3 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+button {
+  cursor: pointer;
 }

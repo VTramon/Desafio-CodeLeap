@@ -1,9 +1,10 @@
-import { SignUpModal } from './SignUpModal'
+import { MainScreen } from './components/MainScreen'
 
 function App() {
   return (
     <div className="App">
-      <SignUpModal />
+      {/* <SignUpModal /> */}
+      <MainScreen />
     </div>
   )
 }
