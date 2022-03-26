@@ -1,11 +1,24 @@
 version: '3.8'
 
 services:
-  app:
-    build: ./
-    command: yarn start
-    container_name: app
-    ports:
-      - 3000:3000
+  # app:
+  #   build: ./
+  #   command: yarn dev
+  #   container_name: app
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - .:/usr/app
+  #   depends_on:
+  #     - database
+  database:
+    image: postgres
+    container_name: database
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=desafio
+      - POSTGRES_USER=teste
     volumes:
-      - .:/usr/app
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
