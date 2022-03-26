@@ -16,12 +16,12 @@ model Post {
   text      String
   createdAt DateTime @default(now()) @db.Timestamp(6)
 
-  User   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  User  User?  @relation(fields: [owner], references: [username])
+  owner String
 }
 
 model User {
   id       Int    @id @default(autoincrement())
-  username String @db.VarChar(255)
+  username String @unique @db.VarChar(255)
   Post     Post[]
 }
