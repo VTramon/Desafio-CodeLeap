@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { CreateMessage } from '../CreateMessage'
 import { Header } from '../Header'
+import { MessageList } from '../MessageList'
 import styles from './styles.module.scss'
 
 export const MainScreen = () => {
@@ -15,6 +16,8 @@ export const MainScreen = () => {
         message={message}
         title={title}
       />
+
+      <MessageList />
     </div>
   )
 }
