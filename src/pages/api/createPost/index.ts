@@ -18,7 +18,7 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         User: true,
       },
     })
-    return response.json('Success')
+    return response.json(createPost)
   } catch (error: any) {
     return response.json(error.message)
   }

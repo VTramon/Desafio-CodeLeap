@@ -1,5 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { useAppSelector } from '../../redux/app/hooks'
+import { ListProps } from '../MessageList'
 import styles from './styles.module.scss'
 
 type CreateMessageProps = {
@@ -7,6 +10,7 @@ type CreateMessageProps = {
   setTitle: (value: string) => void
   message: string
   setMessage: (value: string) => void
+  newPost: (value: ListProps) => void
 }
 
 export const CreateMessage: React.FC<CreateMessageProps> = ({
@@ -14,8 +18,11 @@ export const CreateMessage: React.FC<CreateMessageProps> = ({
   setMessage,
   title,
   setTitle,
+  newPost,
 }) => {
   const [isTheButtonDisabled, setIsTheButtonDisabled] = useState(true)
+  const userState = useAppSelector((state) => state.user)
+
   const handleIfTheButtonIsDisabled = () => {
     if (message !== '' && title !== '') {
       setIsTheButtonDisabled(false)
@@ -24,14 +31,32 @@ export const CreateMessage: React.FC<CreateMessageProps> = ({
     }
   }
 
+  const handleCreatePost = async () => {
+    const response = await axios.post('/api/createPost', {
+      text: message,
+      title: title,
+      owner: userState.username,
+    })
+    newPost(response.data)
+  }
+
   useEffect(() => {
     handleIfTheButtonIsDisabled()
   }, [message, title])
+
   return (
     <div className={styles.container}>
       <h2>What's on your mind?</h2>
 
-      <form className={styles.form}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleCreatePost()
+          setMessage('')
+          setTitle('')
+        }}
+        className={styles.form}
+      >
         <h3>Title</h3>
         <input
           onChange={(e) => {

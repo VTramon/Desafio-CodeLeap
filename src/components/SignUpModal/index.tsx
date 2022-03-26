@@ -32,26 +32,14 @@ export const SignUpModal = () => {
   }
 
   const handleSignUp = async () => {
-    const session = sessionStorage.getItem('user')
+    const response: user = (
+      await axios.post('/api/validateUser', {
+        username: user,
+      })
+    ).data
 
-    if (session !== null) {
-      const response: user = (
-        await axios.post('/api/validateUser', {
-          username: session,
-        })
-      ).data
-
-      dispatch(signUp(response))
-    } else {
-      const response: user = (
-        await axios.post('/api/validateUser', {
-          username: user,
-        })
-      ).data
-
-      sessionStorage.setItem('user', response.username)
-      dispatch(signUp(response))
-    }
+    sessionStorage.setItem('user', response.username)
+    dispatch(signUp(response))
   }
 
   useEffect(() => {

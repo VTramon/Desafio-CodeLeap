@@ -15,8 +15,8 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     signUp(state, action: PayloadAction<userState>) {
-      state = action.payload
-      // console.log(action.payload)
+      state.username = action.payload.username
+      state.id = action.payload.id
     },
   },
 })
