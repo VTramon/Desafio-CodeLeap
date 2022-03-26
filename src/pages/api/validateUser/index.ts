@@ -13,13 +13,15 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
       },
     })
 
-    if (!!validating) {
+    if (!validating) {
       const result = await prisma.user.create({
         data: {
           username: username,
         },
       })
-      return response.json('Success')
+      return response.json(result)
+    } else {
+      return response.json(validating)
     }
   } catch (error: any) {
     response.json(error.message)
