@@ -6,13 +6,13 @@ import { useAppSelector } from '../../redux/app/hooks'
 import { signUp } from '../../redux/features/user/userSlice'
 import { CreateMessage } from '../CreateMessage'
 import { Header } from '../Header'
-import { ListProps, MessageList } from '../MessageList'
+import { MessageList, PostProps } from '../MessageList'
 import styles from './styles.module.scss'
 
 export const MainScreen = () => {
   const [message, setMessage] = useState('')
   const [title, setTitle] = useState('')
-  const [newPost, setNewPost] = useState<ListProps>()
+  const [newPost, setNewPost] = useState<PostProps>()
 
   const router = useRouter()
 
@@ -34,7 +34,7 @@ export const MainScreen = () => {
     }
   }
 
-  const handleNewPost = (value: ListProps) => {
+  const handleNewPost = (value: PostProps) => {
     setNewPost(value)
   }
 

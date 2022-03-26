@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useAppSelector } from '../../redux/app/hooks'
-import { ListProps } from '../MessageList'
+import { PostProps } from '../MessageList'
 import styles from './styles.module.scss'
 
 type CreateMessageProps = {
@@ -10,7 +10,7 @@ type CreateMessageProps = {
   setTitle: (value: string) => void
   message: string
   setMessage: (value: string) => void
-  newPost: (value: ListProps) => void
+  newPost: (value: PostProps) => void
 }
 
 export const CreateMessage: React.FC<CreateMessageProps> = ({

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Header } from '../Header'
 import styles from './styles.module.scss'
 
-export type ListProps = {
+export type PostProps = {
   id: number
   title: string
   text: string
@@ -13,20 +13,33 @@ export type ListProps = {
 }
 
 type MessageListProps = {
-  newPost: ListProps
+  newPost: PostProps
 }
 
 export const MessageList: React.FC<MessageListProps> = ({ newPost }) => {
-  const [list, setList] = useState<ListProps[]>([])
+  const [list, setList] = useState<PostProps[]>([])
 
   const handleList = async () => {
-    const response: ListProps[] = (await axios.get('/api/getAllPosts')).data
-    setList(response.reverse())
+    const response: PostProps[] = (await axios.get('/api/getAllPosts')).data
+    const result = response.reverse()
+    setList(result)
   }
 
   const handleNewPost = () => {
     setList([newPost, ...list])
   }
+
+  const handleDeletedPost = (id: number) => {
+    const newList = list.filter((item) => item.id !== id)
+    console.log(list)
+    setList(newList)
+    console.log(newList)
+  }
+
+  // const handleUpdatedPost = (id:number) => {
+  //   const newList = list.filter((item) => item.id !== id)
+  //   setList(newList)
+  // }
 
   useCallback(() => {
     handleNewPost()
@@ -42,7 +55,12 @@ export const MessageList: React.FC<MessageListProps> = ({ newPost }) => {
         list.map((item, index) => {
           return (
             <div className={styles.message}>
-              <Header title={item.title} />
+              <Header
+                deletedPost={handleDeletedPost}
+                post={item.id}
+                user={item.owner}
+                title={item.title}
+              />
 
               <div className={styles.details}>
                 <p>{`@${item.owner}`}</p>
