@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useAppSelector } from '../../redux/app/hooks'
 import { DeleteModal } from '../DeleteModal'
 import { DeleteIcon, EditIcon } from '../Icons'
+import { UpdatePostModal } from '../UpdatePostModal'
 import styles from './styles.module.scss'
 
 type HeaderProps = {
@@ -21,6 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
   deletedPost,
 }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
   const userState = useAppSelector((state) => state.user)
 
   const handleDeletePost = async () => {
@@ -31,12 +33,27 @@ export const Header: React.FC<HeaderProps> = ({
     setIsDeleteModalOpen(false)
   }
 
+  // const handleUpdatePost = async () => {
+  //   const response = (await axios.post('/api/deletePost', { id: post })).data
+  //   if (deletedPost) {
+  //     deletedPost(response)
+  //   }
+  //   setIsDeleteModalOpen(false)
+  // }
+
   return (
     <>
       {isDeleteModalOpen && (
         <DeleteModal
           cancel={() => setIsDeleteModalOpen(false)}
           delete={() => handleDeletePost()}
+        />
+      )}
+      {isUpdateModalOpen && (
+        <UpdatePostModal
+          postId={post!}
+          isOpen={isUpdateModalOpen}
+          setIsOpen={setIsUpdateModalOpen}
         />
       )}
       <header data-location={location} className={styles.header}>
@@ -46,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button onClick={() => setIsDeleteModalOpen(true)}>
               <DeleteIcon />
             </button>
-            <button>
+            <button onClick={() => setIsUpdateModalOpen(true)}>
               <EditIcon />
             </button>
           </div>

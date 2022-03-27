@@ -31,9 +31,7 @@ export const MessageList: React.FC<MessageListProps> = ({ newPost }) => {
 
   const handleDeletedPost = (id: number) => {
     const newList = list.filter((item) => item.id !== id)
-    console.log(list)
     setList(newList)
-    console.log(newList)
   }
 
   // const handleUpdatedPost = (id:number) => {

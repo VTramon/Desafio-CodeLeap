@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../../redux/app/hooks'
 import { signUp } from '../../redux/features/user/userSlice'
-import { CreateMessage } from '../CreateMessage'
 import { Header } from '../Header'
+import { MessageForm } from '../MessageForm'
 import { MessageList, PostProps } from '../MessageList'
 import styles from './styles.module.scss'
 
@@ -45,7 +45,8 @@ export const MainScreen = () => {
   return (
     <div className={styles.main_container}>
       <Header location="form" title="CodeLeap Network" />
-      <CreateMessage
+      <MessageForm
+        role="create"
         newPost={handleNewPost}
         setMessage={setMessage}
         setTitle={setTitle}

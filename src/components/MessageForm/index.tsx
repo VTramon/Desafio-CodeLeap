@@ -5,20 +5,26 @@ import { useAppSelector } from '../../redux/app/hooks'
 import { PostProps } from '../MessageList'
 import styles from './styles.module.scss'
 
-type CreateMessageProps = {
+type MessageFormProps = {
+  id?: number
   title: string
   setTitle: (value: string) => void
   message: string
   setMessage: (value: string) => void
-  newPost: (value: PostProps) => void
+  newPost?: (value: PostProps) => void
+  editedPost?: (value: PostProps) => void
+  role: 'create' | 'edit'
 }
 
-export const CreateMessage: React.FC<CreateMessageProps> = ({
+export const MessageForm: React.FC<MessageFormProps> = ({
+  id,
   message,
   setMessage,
   title,
   setTitle,
   newPost,
+  editedPost,
+  role,
 }) => {
   const [isTheButtonDisabled, setIsTheButtonDisabled] = useState(true)
   const userState = useAppSelector((state) => state.user)
@@ -37,7 +43,21 @@ export const CreateMessage: React.FC<CreateMessageProps> = ({
       title: title,
       owner: userState.username,
     })
-    newPost(response.data)
+    if (newPost) {
+      newPost(response.data)
+    }
+  }
+
+  const handleEditPost = async () => {
+    const response = await axios.post('/api/updatePost', {
+      text: message,
+      title: title,
+      id: id,
+    })
+    console.log(response.data)
+    if (editedPost) {
+      editedPost(response.data)
+    }
   }
 
   useEffect(() => {
@@ -45,13 +65,19 @@ export const CreateMessage: React.FC<CreateMessageProps> = ({
   }, [message, title])
 
   return (
-    <div className={styles.container}>
-      <h2>What's on your mind?</h2>
+    <div onClick={(e) => e.stopPropagation()} className={styles.container}>
+      {role === 'create' ? <h2>What's on your mind?</h2> : <h2>Edit item</h2>}
 
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          handleCreatePost()
+
+          if (role === 'create') {
+            handleCreatePost()
+          } else {
+            handleEditPost()
+          }
+
           setMessage('')
           setTitle('')
         }}
@@ -77,7 +103,7 @@ export const CreateMessage: React.FC<CreateMessageProps> = ({
         />
 
         <button disabled={isTheButtonDisabled} type="submit">
-          CREATE
+          {role === 'create' ? 'CREATE' : 'SAVE'}
         </button>
       </form>
     </div>
