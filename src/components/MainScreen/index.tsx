@@ -2,17 +2,16 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { ResponsePostProps } from '../../context/CRUD'
 import { useAppSelector } from '../../redux/app/hooks'
 import { signUp } from '../../redux/features/user/userSlice'
 import { Header } from '../Header'
 import { MessageForm } from '../MessageForm'
-import { MessageList, PostProps } from '../MessageList'
+import { MessageList } from '../MessageList'
 import styles from './styles.module.scss'
 
 export const MainScreen = () => {
-  const [message, setMessage] = useState('')
-  const [title, setTitle] = useState('')
-  const [newPost, setNewPost] = useState<PostProps>()
+  const [newPost, setNewPost] = useState<ResponsePostProps>()
 
   const router = useRouter()
 
@@ -34,7 +33,7 @@ export const MainScreen = () => {
     }
   }
 
-  const handleNewPost = (value: PostProps) => {
+  const handleNewPost = (value: ResponsePostProps) => {
     setNewPost(value)
   }
 
@@ -45,14 +44,7 @@ export const MainScreen = () => {
   return (
     <div className={styles.main_container}>
       <Header location="form" title="CodeLeap Network" />
-      <MessageForm
-        role="create"
-        newPost={handleNewPost}
-        setMessage={setMessage}
-        setTitle={setTitle}
-        message={message}
-        title={title}
-      />
+      <MessageForm role="create" />
 
       <MessageList newPost={newPost!} />
     </div>

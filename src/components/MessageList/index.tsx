@@ -1,71 +1,38 @@
-import axios from 'axios'
 import moment from 'moment'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useContext } from 'react'
+import { AppContext, ResponsePostProps } from '../../context/CRUD'
 import { Header } from '../Header'
 import styles from './styles.module.scss'
 
-export type PostProps = {
-  id: number
-  title: string
-  text: string
-  createdAt: string
-  owner: string
-}
-
 type MessageListProps = {
-  newPost: PostProps
+  newPost: ResponsePostProps
 }
 
 export const MessageList: React.FC<MessageListProps> = ({ newPost }) => {
-  const [list, setList] = useState<PostProps[]>([])
-
-  const handleList = async () => {
-    const response: PostProps[] = (await axios.get('/api/getAllPosts')).data
-    const result = response.reverse()
-    setList(result)
-  }
+  const { postList, setPostList } = useContext(AppContext)
 
   const handleNewPost = () => {
-    setList([newPost, ...list])
+    setPostList([newPost, ...postList])
   }
-
-  const handleDeletedPost = (id: number) => {
-    const newList = list.filter((item) => item.id !== id)
-    setList(newList)
-  }
-
-  // const handleUpdatedPost = (id:number) => {
-  //   const newList = list.filter((item) => item.id !== id)
-  //   setList(newList)
-  // }
 
   useCallback(() => {
     handleNewPost()
   }, [newPost])
 
-  useEffect(() => {
-    handleList()
-  }, [list])
-
   return (
     <section className={styles.list}>
-      {list &&
-        list.map((item, index) => {
+      {postList &&
+        postList.map((item, index) => {
           return (
             <div className={styles.message}>
-              <Header
-                deletedPost={handleDeletedPost}
-                post={item.id}
-                user={item.owner}
-                title={item.title}
-              />
+              <Header post={item.id} user={item.username} title={item.title} />
 
               <div className={styles.details}>
-                <p>{`@${item.owner}`}</p>
-                <p>{moment(item.createdAt).fromNow()}</p>
+                <p>{`@${item.username}`}</p>
+                <p>{moment(item.created_datetime).fromNow()}</p>
               </div>
 
-              <p>{item.text}</p>
+              <p>{item.content}</p>
             </div>
           )
         })}

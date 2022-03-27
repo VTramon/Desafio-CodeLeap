@@ -11,11 +11,6 @@ type user = {
   id: number
 }
 
-// type SignUpModalProps = {
-//   isOpen: boolean
-//   setIsOpen: () => void
-// }
-
 export const SignUpModal = () => {
   const [user, setUser] = useState('')
   const [isEmpty, setIsEmpty] = useState(true)

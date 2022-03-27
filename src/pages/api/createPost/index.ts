@@ -4,14 +4,14 @@ import { NextApiRequest, NextApiResponse } from 'next'
 const prisma = new PrismaClient()
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
-  const { text, title, owner } = request.body
+  const { content, title, username } = request.body
 
   try {
     const createPost = await prisma.post.create({
       data: {
-        text: text,
+        content: content,
         title: title,
-        owner: owner,
+        username: username,
       },
       include: {
         User: true,

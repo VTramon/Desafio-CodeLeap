@@ -4,12 +4,12 @@ import { NextApiRequest, NextApiResponse } from 'next'
 const prisma = new PrismaClient()
 
 export default async (request: NextApiRequest, response: NextApiResponse) => {
-  const { text, title, id } = request.body
+  const { content, title, id } = request.body
 
   try {
     const result = await prisma.post.update({
       data: {
-        text: text,
+        content: content,
         title: title,
       },
       where: {

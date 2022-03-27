@@ -1,39 +1,26 @@
-import { useState } from 'react'
+import { useContext } from 'react'
+import { AppContext } from '../../context/CRUD'
 import { MessageForm } from '../MessageForm'
 import styles from './styles.module.scss'
 
 type UpdatePostModalProps = {
-  isOpen: boolean
-  setIsOpen: (value: boolean) => void
-  postId: number
+  update: () => void
 }
-export const UpdatePostModal: React.FC<UpdatePostModalProps> = ({
-  isOpen,
-  setIsOpen,
-  postId,
-}) => {
-  const [message, setMessage] = useState('')
-  const [title, setTitle] = useState('')
+export const UpdatePostModal: React.FC<UpdatePostModalProps> = ({ update }) => {
+  const { setIsUpdateModalOpen } = useContext(AppContext)
 
   return (
     <section
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
-          setIsOpen(false)
+          setIsUpdateModalOpen(false)
         }
       }}
-      onClick={() => setIsOpen(false)}
+      onClick={() => setIsUpdateModalOpen(false)}
       className={styles.background}
     >
-      <MessageForm
-        role="edit"
-        id={postId}
-        setMessage={setMessage}
-        setTitle={setTitle}
-        message={message}
-        title={title}
-      />
+      <MessageForm role="edit" />
     </section>
   )
 }

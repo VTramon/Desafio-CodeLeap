@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'react-redux'
+import { AppProvider } from '../context/CRUD'
 import '../GlobalStyles/index.scss'
 import { store } from '../redux/app/store'
 
@@ -18,7 +19,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Codeleap challenge</title>
       </Head>
       <Provider store={store}>
-        <Component {...pageProps} />
+        <AppProvider>
+          <Component {...pageProps} />
+        </AppProvider>
       </Provider>
     </>
   )

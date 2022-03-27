@@ -1,5 +1,5 @@
-import axios from 'axios'
-import { useState } from 'react'
+import { useContext } from 'react'
+import { AppContext } from '../../context/CRUD'
 import { useAppSelector } from '../../redux/app/hooks'
 import { DeleteModal } from '../DeleteModal'
 import { DeleteIcon, EditIcon } from '../Icons'
@@ -11,7 +11,6 @@ type HeaderProps = {
   location?: 'form'
   user?: string
   post?: number
-  deletedPost?: (id: number) => void
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -19,51 +18,50 @@ export const Header: React.FC<HeaderProps> = ({
   location,
   user,
   post,
-  deletedPost,
 }) => {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
   const userState = useAppSelector((state) => state.user)
 
-  const handleDeletePost = async () => {
-    const response = (await axios.post('/api/deletePost', { id: post })).data
-    if (deletedPost) {
-      deletedPost(response)
-    }
-    setIsDeleteModalOpen(false)
-  }
-
-  // const handleUpdatePost = async () => {
-  //   const response = (await axios.post('/api/deletePost', { id: post })).data
-  //   if (deletedPost) {
-  //     deletedPost(response)
-  //   }
-  //   setIsDeleteModalOpen(false)
-  // }
+  const {
+    deletePost,
+    setSelectedPost,
+    isDeleteModalOpen,
+    isUpdateModalOpen,
+    setIsDeleteModalOpen,
+    setIsUpdateModalOpen,
+    updatePost,
+  } = useContext(AppContext)
 
   return (
     <>
       {isDeleteModalOpen && (
         <DeleteModal
           cancel={() => setIsDeleteModalOpen(false)}
-          delete={() => handleDeletePost()}
+          delete={() => {
+            deletePost()
+            setIsDeleteModalOpen(false)
+            setSelectedPost(null)
+          }}
         />
       )}
-      {isUpdateModalOpen && (
-        <UpdatePostModal
-          postId={post!}
-          isOpen={isUpdateModalOpen}
-          setIsOpen={setIsUpdateModalOpen}
-        />
-      )}
+      {isUpdateModalOpen && <UpdatePostModal update={() => updatePost} />}
       <header data-location={location} className={styles.header}>
         <h2>{title}</h2>
         {user && user === userState.username && location === undefined && (
           <div>
-            <button onClick={() => setIsDeleteModalOpen(true)}>
+            <button
+              onClick={() => {
+                setSelectedPost(post!)
+                setIsDeleteModalOpen(true)
+              }}
+            >
               <DeleteIcon />
             </button>
-            <button onClick={() => setIsUpdateModalOpen(true)}>
+            <button
+              onClick={() => {
+                setSelectedPost(post!)
+                setIsUpdateModalOpen(true)
+              }}
+            >
               <EditIcon />
             </button>
           </div>

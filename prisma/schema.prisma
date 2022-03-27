@@ -11,13 +11,13 @@ datasource db {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)
-  text      String
-  createdAt DateTime @default(now()) @db.Timestamp(6)
+  id               Int      @id @default(autoincrement())
+  title            String   @db.VarChar(255)
+  content          String
+  created_datetime DateTime @default(now()) @db.Timestamp(6)
 
-  User  User?  @relation(fields: [owner], references: [username])
-  owner String
+  User     User?  @relation(fields: [username], references: [username])
+  username String
 }
 
 model User {

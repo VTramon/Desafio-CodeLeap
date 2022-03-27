@@ -1,68 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { useAppSelector } from '../../redux/app/hooks'
-import { PostProps } from '../MessageList'
+import { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../../context/CRUD'
 import styles from './styles.module.scss'
 
 type MessageFormProps = {
-  id?: number
-  title: string
-  setTitle: (value: string) => void
-  message: string
-  setMessage: (value: string) => void
-  newPost?: (value: PostProps) => void
-  editedPost?: (value: PostProps) => void
   role: 'create' | 'edit'
 }
 
-export const MessageForm: React.FC<MessageFormProps> = ({
-  id,
-  message,
-  setMessage,
-  title,
-  setTitle,
-  newPost,
-  editedPost,
-  role,
-}) => {
+export const MessageForm: React.FC<MessageFormProps> = ({ role }) => {
   const [isTheButtonDisabled, setIsTheButtonDisabled] = useState(true)
-  const userState = useAppSelector((state) => state.user)
+
+  const {
+    createPost,
+    setContent,
+    setTitle,
+    content,
+    title,
+    updatePost,
+    setIsUpdateModalOpen,
+  } = useContext(AppContext)
 
   const handleIfTheButtonIsDisabled = () => {
-    if (message !== '' && title !== '') {
+    if (content !== '' && title !== '') {
       setIsTheButtonDisabled(false)
     } else {
       setIsTheButtonDisabled(true)
     }
   }
 
-  const handleCreatePost = async () => {
-    const response = await axios.post('/api/createPost', {
-      text: message,
-      title: title,
-      owner: userState.username,
-    })
-    if (newPost) {
-      newPost(response.data)
-    }
-  }
-
-  const handleEditPost = async () => {
-    const response = await axios.post('/api/updatePost', {
-      text: message,
-      title: title,
-      id: id,
-    })
-    console.log(response.data)
-    if (editedPost) {
-      editedPost(response.data)
-    }
-  }
-
   useEffect(() => {
     handleIfTheButtonIsDisabled()
-  }, [message, title])
+  }, [content, title])
 
   return (
     <div onClick={(e) => e.stopPropagation()} className={styles.container}>
@@ -73,12 +41,13 @@ export const MessageForm: React.FC<MessageFormProps> = ({
           e.preventDefault()
 
           if (role === 'create') {
-            handleCreatePost()
+            createPost()
           } else {
-            handleEditPost()
+            updatePost()
+            setIsUpdateModalOpen(false)
           }
 
-          setMessage('')
+          setContent('')
           setTitle('')
         }}
         className={styles.form}
@@ -96,9 +65,9 @@ export const MessageForm: React.FC<MessageFormProps> = ({
         <h3>Content</h3>
         <textarea
           onChange={(e) => {
-            setMessage(e.target.value)
+            setContent(e.target.value)
           }}
-          value={message}
+          value={content}
           placeholder="Content here"
         />
 
