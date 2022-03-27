@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({
         />
       )}
       {isUpdateModalOpen && <UpdatePostModal update={() => updatePost} />}
-      <header data-location={location} className={styles.header}>
+      <header data-location={`${location}`} className={styles.header}>
         <h2>{title}</h2>
         {user && user === userState.username && location === undefined && (
           <div>
